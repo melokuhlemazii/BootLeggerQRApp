@@ -1,0 +1,32 @@
+﻿@model IEnumerable<BootLeggerQRApp.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<h2 class="mb-4 text-center">🍽️ Our Menu</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="@item.ImagePath" class="card-img-top" alt="@item.Name" style="height:180px; object-fit:cover;" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text text-muted" style="font-size: 0.9rem">@item.Description</p>
+                    <p class="fw-bold">@item.Price.ToString("C")</p>
+
+                    <form asp-controller="Orders" asp-action="AddToOrder" method="post" class="d-flex">
+                        <input type="hidden" name="menuItemId" value="@item.MenuItemID" />
+                        <input type="number" name="quantity" value="1" min="1" class="form-control me-2" style="width:70px;" />
+                        <button type="submit" class="btn btn-success btn-sm">Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

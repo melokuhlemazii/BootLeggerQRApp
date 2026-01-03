@@ -1,0 +1,53 @@
+﻿@model BootLeggerQRApp.Models.Order
+
+@{
+    ViewData["Title"] = "My Order";
+}
+
+<h2 class="mb-4 text-center">🛒 My Order</h2>
+
+@if (Model.OrderItems == null || !Model.OrderItems.Any())
+{
+    <div class="alert alert-info text-center">
+        Your cart is empty. Browse the <a asp-controller="QRCode" asp-action="Menu">menu</a> to add items.
+    </div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Item</th>
+                <th class="text-center">Qty</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.MenuItem.Name</td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-end">@item.MenuItem.Price.ToString("C")</td>
+                    <td class="text-end">@((item.MenuItem.Price * item.Quantity).ToString("C"))</td>
+                    <td>
+                        <form asp-controller="Orders" asp-action="RemoveItem" method="post" class="d-inline">
+                            <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+        <h4>Subtotal: @Model.OrderItems.Sum(i => i.MenuItem.Price * i.Quantity).ToString("C")</h4>
+        <a asp-controller="Payment" asp-action="Index" asp-route-orderId="@Model.OrderId" class="btn btn-success btn-lg mt-2">
+            Proceed to Payment
+        </a>
+    </div>
+}
+

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<BootLeggerQRApp.Models.Table>
+@using QRCoder
+@using System.Text
+
+@{
+    ViewData["Title"] = "Table QR Codes";
+}
+
+<h2>Table QR Codes</h2>
+<p>Scan any code to simulate the customer flow.</p>
+
+<div class="row">
+    @foreach (var t in Model)
+    {
+        var joinUrl = Url.Action("Join", "QRCode", new { tableId = t.TableId }, Context.Request.Scheme);
+
+        using (var qrGenerator = new QRCodeGenerator())
+        using (var qrData = qrGenerator.CreateQrCode(joinUrl, QRCodeGenerator.ECCLevel.Q))
+        using (var qrCode = new PngByteQRCode(qrData))
+        {
+            var qrBytes = qrCode.GetGraphic(20);
+            var qrBase64 = "data:image/png;base64," + Convert.ToBase64String(qrBytes);
+
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Table @t.TableNumber</h5>
+                        <img src="@qrBase64" class="img-fluid border mb-2" />
+                        <p>
+                            <a href="@joinUrl" class="btn btn-primary">Join Table</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+

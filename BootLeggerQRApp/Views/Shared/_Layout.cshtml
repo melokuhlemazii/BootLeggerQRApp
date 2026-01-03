@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BootLeggerQRApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BootLeggerQRApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                    <span class="brand-badge">🍻</span>
+                    <span class="brand-title">Bootlegger</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="QRCode" asp-action="Menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Orders" asp-action="MyOrder">My Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Payment" asp-action="Index">Payment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Feedbacks" asp-action="Create">Feedback</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @if (ViewData["Title"]?.ToString() == "Welcome")
+    {
+        @RenderBody()
+    }
+    else
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+
+    <footer class="site-footer mt-5 py-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="text-muted">© @DateTime.Now.Year Bootlegger</div>
+            <div>
+                <a class="text-muted me-3" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a class="text-muted" asp-controller="Home" asp-action="About">About</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

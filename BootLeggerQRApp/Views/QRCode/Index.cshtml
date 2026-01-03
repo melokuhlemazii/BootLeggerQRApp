@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "QR Entry";
+    var tables = ViewBag.Tables as List<BootLeggerQRApp.Models.Table>;
+    int? tableId = ViewBag.CurrentTableId as int?;
+}
+<h1>QR Entry</h1>
+
+@if (TempData["Banner"] != null)
+{
+    <div class="alert alert-success">@TempData["Banner"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (tableId != null)
+{
+    <div class="alert alert-info">
+        Current Table: <strong>@tableId</strong>
+        <a class="btn btn-sm btn-outline-secondary ms-2" asp-action="Leave">Leave table</a>
+        <a class="btn btn-sm btn-primary ms-2" asp-action="Menu">Open Menu</a>
+    </div>
+}
+else
+{
+    <p>No table selected. Choose one below to simulate scanning a QR:</p>
+}
+
+<div class="row">
+    @foreach (var t in tables ?? new List<BootLeggerQRApp.Models.Table>())
+    {
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Table @t.TableNumber</h5>
+                    <a class="btn btn-primary" asp-action="Join" asp-route-tableId="@t.TableId">Join</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
